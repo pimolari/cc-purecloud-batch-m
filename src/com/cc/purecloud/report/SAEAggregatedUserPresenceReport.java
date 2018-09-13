@@ -104,6 +104,7 @@ public class SAEAggregatedUserPresenceReport extends GenericReport {
                  .add(row.getOnBreak().getTime())
                  .add(row.getAway().getTime())
                  .add(row.getOnQueue().getTime())
+                 .add(row.getTraining().getTime())
                  .add(row.getMeal().getTime())
                  .add(row.getBusy().getTime()), "ms", "s").intValue()).append(",");
                  

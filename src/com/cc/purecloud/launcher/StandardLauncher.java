@@ -122,7 +122,7 @@ public class StandardLauncher {
       if (this.reportType.equals("queue")) {
         QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
         queueAggregatedClient.setInterval(interval);
-        queueAggregatedClient.setQueues(Config.get("report.queue.aggregated.queue.list"));
+        queueAggregatedClient.setQueues(Config.get("report.queue.aggregate.queue.list"));
         SAEAggregatedQueueReport report = new SAEAggregatedQueueReport(StandardLauncher.REPORT_QUEUE_AGGREGATED,
             queueAggregatedClient.getQueueAggregateMetrics());
         report.setOutputPath(this.outputPath);
@@ -130,7 +130,7 @@ public class StandardLauncher {
       } else if (this.reportType.equals("queuetest")) {
         QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
         queueAggregatedClient.setInterval(interval);
-        queueAggregatedClient.setQueues(Config.get("report.queue.aggregated.queue.list"));
+        queueAggregatedClient.setQueues(Config.get("report.queue.aggregate.queue.list"));
         SAEAggregatedQueueReport report = new SAEAggregatedQueueReport(StandardLauncher.REPORT_QUEUE_AGGREGATED,
             queueAggregatedClient.getQueueAggregateMetrics());
         report.setOutputPath(this.outputPath);
@@ -148,7 +148,7 @@ public class StandardLauncher {
         UserPresenceAggregatedMetricsClient userPresenceClient = new UserPresenceAggregatedMetricsClient(this.clientId,
             this.clientSecret);
         userPresenceClient.setInterval(interval);
-        userPresenceClient.setUsers(Config.get("report.userpresence.aggregated.user.list"));
+        userPresenceClient.setUsers(Config.get("report.userpresence.aggregate.user.list"));
         UserPresenceAggregateMetricsModel model = userPresenceClient.run();
         SAEAggregatedUserPresenceReport intervals = new SAEAggregatedUserPresenceReport(
             StandardLauncher.REPORT_USER_PRESENCE_AGGREGATED, model);

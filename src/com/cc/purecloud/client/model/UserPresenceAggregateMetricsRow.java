@@ -31,6 +31,7 @@ public class UserPresenceAggregateMetricsRow implements Serializable {
   CustomMetric busy = null;
   CustomMetric meeting = null;
   CustomMetric idle = null;
+  CustomMetric training = null;
   
   CustomMetric totalOnline = null;
   CustomMetric totalOffline = null;
@@ -78,6 +79,7 @@ public class UserPresenceAggregateMetricsRow implements Serializable {
     totalOnline = new CustomMetric();
     totalOffline = new CustomMetric();
     data = new HashMap<String, CustomMetric>();
+    training = new CustomMetric();
   }
   
 
@@ -219,6 +221,16 @@ public class UserPresenceAggregateMetricsRow implements Serializable {
 
   public void setIdle(CustomMetric idle) {
     this.idle = idle;
+  }
+
+  
+  
+  public CustomMetric getTraining() {
+    return training;
+  }
+
+  public void setTraining(CustomMetric training) {
+    this.training = training;
   }
 
   public CustomMetric getTotalOnline() {

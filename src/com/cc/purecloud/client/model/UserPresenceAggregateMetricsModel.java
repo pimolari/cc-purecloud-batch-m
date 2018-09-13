@@ -66,9 +66,9 @@ public class UserPresenceAggregateMetricsModel extends ArrayList<UserPresenceAgg
       presenceDefinitions.add(new CustomPresenceDefinition(key, this.presenceDef.get(key)));
     }
     
-    /*for (CustomPresenceDefinition pd : presenceDefinitions)
+    for (CustomPresenceDefinition pd : presenceDefinitions)
       System.out.println(" > " + pd.getDesc() + "   " + pd.getId());
-    */
+    
     
     return presenceDefinitions;
   }

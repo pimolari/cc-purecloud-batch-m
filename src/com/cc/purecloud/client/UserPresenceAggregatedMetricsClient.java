@@ -192,8 +192,11 @@ public class UserPresenceAggregatedMetricsClient extends AbstractClient {
                 } else if (smetric.getQualifier().toUpperCase().equals("IDLE")) {
                   row.setIdle(new CustomMetric(0, smetric.getStats().getSum()));
                 
+                } else if (smetric.getQualifier().toUpperCase().equals("TRAINING")) {
+                  row.setTraining(new CustomMetric(0, smetric.getStats().getSum()));
+                
                 } else {
-                  System.out.println("Unkonw qualifier name: " + smetric.getQualifier() + " : " + smetric.getStats().getSum());
+                  System.out.println("Unknown qualifier name: " + smetric.getQualifier() + " : " + smetric.getStats().getSum());
                 }
                 break;
             }
