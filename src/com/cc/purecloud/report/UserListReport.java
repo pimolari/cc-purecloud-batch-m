@@ -19,8 +19,8 @@ public class UserListReport extends GenericReport {
     super(reportName);
     this.model = model;
     
-    System.out.println(model);
-    System.out.println(model.size());
+    //System.out.println(model);
+    //System.out.println(model.size());
   }
   
   public List<CustomUser> getModel() {

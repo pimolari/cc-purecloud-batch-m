@@ -22,7 +22,7 @@ public class QueueAggregateMetricsModel extends ArrayList<QueueAggregateMetricsR
     }
   }
   
-  public void totalize() {
+  /*public void totalize() {
     
     for (QueueAggregateMetricsRow row : this) {
       total.getAbandon5s().setCount(total.getAbandon5s().getCount() + row.getAbandon5s().getCount());
@@ -30,6 +30,8 @@ public class QueueAggregateMetricsModel extends ArrayList<QueueAggregateMetricsR
     }
     
     System.out.println(" Totals > " + new Gson().toJson(total));
-  }
+  }*/
+  
+  
   
 }

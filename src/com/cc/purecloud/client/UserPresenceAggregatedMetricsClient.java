@@ -12,6 +12,7 @@ import com.cc.purecloud.client.model.CustomPresenceDefinition;
 import com.cc.purecloud.client.model.CustomUser;
 import com.cc.purecloud.client.model.UserPresenceAggregateMetricsModel;
 import com.cc.purecloud.client.model.UserPresenceAggregateMetricsRow;
+import com.google.gson.Gson;
 import com.mypurecloud.sdk.v2.ApiException;
 import com.mypurecloud.sdk.v2.api.AnalyticsApi;
 import com.mypurecloud.sdk.v2.model.AggregateDataContainer;
@@ -148,7 +149,7 @@ public class UserPresenceAggregatedMetricsClient extends AbstractClient {
     filter.setPredicates(Arrays.asList(predicate));
     body.setFilter(filter);
     
-    //System.out.println("body: " + new Gson().toJson(body));
+    System.out.println("body: " + new Gson().toJson(body));
     
     try {
       PresenceQueryResponse result = apiInstance.postAnalyticsUsersAggregatesQuery(body);

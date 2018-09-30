@@ -3,6 +3,8 @@ package com.cc.purecloud.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Properties;
 
@@ -30,6 +32,7 @@ public class Config {
   
   public static String get(String key) throws ConfigException {
     String value = properties.getProperty(key);
+    
     if (value == null)
       throw new ConfigException("Missing configuration property " + key);
     return value;

@@ -14,6 +14,7 @@ import com.cc.purecloud.client.model.QueueAggregateMetricsRow;
 import com.cc.purecloud.client.model.UserQueueAggregateMetricsModel;
 import com.cc.purecloud.client.model.UserQueueAggregateMetricsRow;
 import com.cc.purecloud.client.model.util.CustomMetricUtil;
+import com.google.gson.Gson;
 import com.mypurecloud.sdk.v2.ApiException;
 import com.mypurecloud.sdk.v2.api.AnalyticsApi;
 import com.mypurecloud.sdk.v2.model.AggregateDataContainer;
@@ -112,7 +113,9 @@ public class QueueAggregateMetricsClient extends AbstractClient {
     System.out.println("Queue Aggregated Metrics Client is now executing");
     System.out.println("Retrieving queue metrics");
     
+    
     for (CustomQueue queue : this.getQueues()) {
+      //System.out.println(">> queue " + queue.getName());
       model.append(this.getQueueAggregateMetrics(queue));
     }
     
@@ -130,6 +133,7 @@ public class QueueAggregateMetricsClient extends AbstractClient {
     }
     
     for (CustomUser user : this.getUsers()) {
+      //System.out.println(">> user " + user.getName());
       model.append(this.getUserQueueAggregateMetrics(user, queueList));
     }
     

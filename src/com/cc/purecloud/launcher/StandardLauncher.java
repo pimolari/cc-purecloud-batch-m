@@ -10,12 +10,13 @@ import com.cc.purecloud.client.QueueClient;
 import com.cc.purecloud.client.UserClient;
 import com.cc.purecloud.client.UserPresenceAggregatedMetricsClient;
 import com.cc.purecloud.client.model.UserPresenceAggregateMetricsModel;
+import com.cc.purecloud.client.model.util.QueueModelUtils;
 import com.cc.purecloud.report.QueueListReport;
-import com.cc.purecloud.report.SAEAggregatedQueueReport;
 import com.cc.purecloud.report.SAEAggregateServiceNowReport;
+import com.cc.purecloud.report.SAEAggregateUserQueueReport;
+import com.cc.purecloud.report.SAEAggregatedQueueReport;
 import com.cc.purecloud.report.SAEAggregatedTotalUserPresenceReport;
 import com.cc.purecloud.report.SAEAggregatedUserPresenceReport;
-import com.cc.purecloud.report.SAEAggregateUserQueueReport;
 import com.cc.purecloud.report.UserListReport;
 import com.cc.purecloud.util.ArgumentException;
 import com.cc.purecloud.util.Config;
@@ -95,6 +96,10 @@ public class StandardLauncher {
         this.endDateTime = this.startDateTime.plusDays(1);
       }
       
+      if (!this.endDateTime.isAfter(this.startDateTime)) {
+        throw new ArgumentException("Incorrect dates. Make sure that start date is before end date");
+      }
+      
       if (outputType == null) {
         System.out.println("  Defaults to CSV");
         outputType = "csv";
@@ -105,7 +110,7 @@ public class StandardLauncher {
         reportType = "queue";
       }
       
-      System.out.println("Generating " + reportType + " report in " + outputType + " format for interval " + interval);
+      //System.out.println("Generating " + reportType + " report in " + outputType + " format for interval " + interval);
       
       this.interval = startDateTime.minusHours(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
           .toString()
@@ -115,9 +120,9 @@ public class StandardLauncher {
           // endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
           endDateTime.minusHours(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
       
-      if (!this.endDateTime.isAfter(this.startDateTime)) {
-        throw new ArgumentException("Incorrect dates. Make sure that start date is before end date");
-      }
+      System.out.println("Generating " + reportType + " report in " + outputType + " format for interval " + interval);
+      
+      
       
       if (this.reportType.equals("queue")) {
         QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
@@ -173,16 +178,16 @@ public class StandardLauncher {
         queueAggregateClient.setInterval(interval);
         queueAggregateClient.setQueues(Config.get("report.servicenow.aggregate.queue.list"));
         SAEAggregateServiceNowReport report = new SAEAggregateServiceNowReport(StandardLauncher.REPORT_SERVICENOW_AGGREGATED,
-            queueAggregateClient.getQueueAggregateMetrics());
+            QueueModelUtils.aggregateModelDailyData(queueAggregateClient.getQueueAggregateMetrics()), Config.get("report.servicenow.aggregate.country"), Config.get("report.servicenow.aggregate.company"));
         report.setOutputPath(this.outputPath);
         String fileName = report.generate(outputType);
-        
         ServiceNowSimpleClient snClient = new ServiceNowSimpleClient();
         snClient.uploadAttachment(Config.get("report.servicenow.aggregate.url"), 
                                   Config.get("servicenow.clientId"), 
                                   Config.get("servicenow.clientSecret"), 
-                                  "/Users/gmongelli/work/temp/sae/output/SAE_TEST_ES.xlsx");
-                                  //this.outputPath + Config.get("program.separator") + "" + fileName);
+                                  //"/Users/gmongelli/work/temp/sae/output/sae-servicenow-metrics-20180709.csv");
+                                  //"/Users/gmongelli/work/temp/sae/output/SAE_TEST_ES.xlsx");
+                                  this.outputPath + Config.get("program.separator") + fileName);
       }
     } catch (OutputException e) {
       System.err.println(e.getMessage());
