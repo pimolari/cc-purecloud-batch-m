@@ -61,10 +61,15 @@ public class SAEAggregatedUserPresenceReport extends GenericReport {
       
       if (row.getType().equals(this.getType())) {
         buffer.append("\n");
-        buffer.append(row.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
-        buffer.append(row.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
-        buffer.append(row.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
-        buffer.append(row.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        //buffer.append(row.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        //buffer.append(row.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        //buffer.append(row.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        //buffer.append(row.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        
+        buffer.append(row.getDateIni().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        buffer.append(row.getDateIni().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        buffer.append(row.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        buffer.append(row.getDateEnd().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
         buffer.append(row.getUserName()).append(",");
         
         for (CustomPresenceDefinition presenceDefinition : this.model.getPresenceDefinitions()) {

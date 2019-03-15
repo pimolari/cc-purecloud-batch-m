@@ -28,30 +28,31 @@ public class SAEAggregateServiceNowReport extends GenericReport {
   public String generateCSV() {
     StringBuffer buffer = new StringBuffer();
    
-    buffer.append("'start.date',"
-                + "'offered.count',"
-                + "'abandon.count',"
-                + "'alert.time',"
-                + "'talk.time',"
-                + "'answer.count',"
-                + "'answer15s.count',"
-                + "'country',"
-                + "'company'");
+    buffer.append("\"FECHA\","
+                + "\"LLAMADAS_ENTRANTES\"," // offered.count
+                + "\"LLAMADAS_ABANDONADAS\"," // abandon.count
+                + "\"TIEMPO_CONTESTACION\"," // alert.time
+                + "\"TIEMPO_CONVERSACION\"," // talk.time
+                + "\"LLAMADAS_ATENDIDAS\"," // answer.count
+                + "\"LLAMADAS_ATENDIDAS_15\"," // answer15s.count
+                + "\"PAIS\"," // country
+                + "\"EMPRESA\""); // company
     
     for (QueueAggregateMetricsRow row : this.model) {
       buffer.append("\n");
-      buffer.append("'" + row.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("',");
+      //buffer.append("\"" + row.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("\",");
+      buffer.append("\"" + row.getDateIni().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("\",");
       
-      buffer.append("'" + row.getOffered().getCount()).append("',");
-      buffer.append("'" + row.getAbandon().getCount()).append("',");
+      buffer.append("\"" + row.getOffered().getCount()).append("\",");
+      buffer.append("\"" + row.getAbandon().getCount()).append("\",");
       //buffer.append(row.getAbandon5s().getCount()).append(",");
-      buffer.append("'" + Utils.convert(row.getAlertTime().getTime(), "ms", "s")).append("',");
-      buffer.append("'" + Utils.convert(row.getTalk().getTime(), "ms", "s")).append("',");
-      buffer.append("'" + row.getAnswer().getCount()).append("',");
-      buffer.append("'" + row.getAnswer15s().getCount()).append("',");
+      buffer.append("\"" + Utils.convert(row.getAlertTime().getTime(), "ms", "s")).append("\",");
+      buffer.append("\"" + Utils.convert(row.getTalk().getTime(), "ms", "s")).append("\",");
+      buffer.append("\"" + row.getAnswer().getCount()).append("\",");
+      buffer.append("\"" + row.getAnswer15s().getCount()).append("\",");
       //buffer.append(row.getTalk().getCount()).append(",");
-      buffer.append("'" + this.country + "',");
-      buffer.append("'" + this.company + "'");
+      buffer.append("\"" + this.country + "\",");
+      buffer.append("\"" + this.company + "\"");
       
     }
     

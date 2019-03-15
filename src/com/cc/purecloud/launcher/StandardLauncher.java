@@ -22,7 +22,9 @@ import com.cc.purecloud.util.ArgumentException;
 import com.cc.purecloud.util.Config;
 import com.cc.purecloud.util.ConfigException;
 import com.cc.purecloud.util.OutputException;
+import com.cc.purecloud.util.Utils;
 import com.cc.servicenow.ServiceNowSimpleClient;
+import com.cipher.CryptoUtil;
 
 public class StandardLauncher {
   
@@ -47,6 +49,7 @@ public class StandardLauncher {
   private String configFilePath = "batch.properties"; // Set by the -c argument
   private String outputPath = null; // Set by the -o argument
   private String interval = null;
+  private String secretKey = null;
   
   public StandardLauncher() {
     // this.init(null, null, null);
@@ -112,20 +115,28 @@ public class StandardLauncher {
       
       //System.out.println("Generating " + reportType + " report in " + outputType + " format for interval " + interval);
       
-      this.interval = startDateTime.minusHours(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+      /*this.interval = startDateTime.minusHours(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
           .toString()
           // interval =
           // startDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")).toString()
           + "/" +
           // endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
           endDateTime.minusHours(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+      */
+      
+      long utcOffset = Utils.convertToLong(Config.get("program.timezone.offset"));
+      System.out.println(" ! Applies UTC offset " + utcOffset + "h");
+      
+      this.interval = Utils.adjustDate(startDateTime, utcOffset).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+          .toString()
+          + "/" +
+          Utils.adjustDate(endDateTime, utcOffset).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
       
       System.out.println("Generating " + reportType + " report in " + outputType + " format for interval " + interval);
       
-      
-      
       if (this.reportType.equals("queue")) {
         QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
+        //QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         queueAggregatedClient.setInterval(interval);
         queueAggregatedClient.setQueues(Config.get("report.queue.aggregate.queue.list"));
         SAEAggregatedQueueReport report = new SAEAggregatedQueueReport(StandardLauncher.REPORT_QUEUE_AGGREGATED,
@@ -134,6 +145,7 @@ public class StandardLauncher {
         report.generate(outputType);
       } else if (this.reportType.equals("queuetest")) {
         QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
+        //QueueAggregateMetricsClient queueAggregatedClient = new QueueAggregateMetricsClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         queueAggregatedClient.setInterval(interval);
         queueAggregatedClient.setQueues(Config.get("report.queue.aggregate.queue.list"));
         SAEAggregatedQueueReport report = new SAEAggregatedQueueReport(StandardLauncher.REPORT_QUEUE_AGGREGATED,
@@ -142,6 +154,7 @@ public class StandardLauncher {
         report.generate(outputType);
       } else if (this.reportType.equals("userqueue")) {
         QueueAggregateMetricsClient queueAggregateClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
+        //QueueAggregateMetricsClient queueAggregateClient = new QueueAggregateMetricsClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         queueAggregateClient.setInterval(interval);
         queueAggregateClient.setQueues(Config.get("report.userqueue.aggregate.queue.list"));
         queueAggregateClient.setUsers(Config.get("report.userqueue.aggregate.user.list"));
@@ -150,8 +163,8 @@ public class StandardLauncher {
         report.setOutputPath(this.outputPath);
         report.generate(outputType);
       } else if (this.reportType.equals("userpresence")) {
-        UserPresenceAggregatedMetricsClient userPresenceClient = new UserPresenceAggregatedMetricsClient(this.clientId,
-            this.clientSecret);
+        UserPresenceAggregatedMetricsClient userPresenceClient = new UserPresenceAggregatedMetricsClient(this.clientId, this.clientSecret);
+        //UserPresenceAggregatedMetricsClient userPresenceClient = new UserPresenceAggregatedMetricsClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         userPresenceClient.setInterval(interval);
         userPresenceClient.setUsers(Config.get("report.userpresence.aggregate.user.list"));
         UserPresenceAggregateMetricsModel model = userPresenceClient.run();
@@ -165,16 +178,19 @@ public class StandardLauncher {
         totals.generate(outputType);
       } else if (this.reportType.equals("userlist")) {
         UserClient userClient = new UserClient(this.clientId, this.clientSecret);
+        //UserClient userClient = new UserClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         UserListReport report = new UserListReport(StandardLauncher.REPORT_USER_LIST, userClient.list());
         report.setOutputPath(this.outputPath);
         report.generate(outputType);
       } else if (this.reportType.equals("queuelist")) {
         QueueClient queueClient = new QueueClient(this.clientId, this.clientSecret);
+        //QueueClient queueClient = new QueueClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         QueueListReport report = new QueueListReport(StandardLauncher.REPORT_QUEUE_LIST, queueClient.list());
         report.setOutputPath(this.outputPath);
         report.generate(outputType);
       } else if (this.reportType.equals("servicenow")) {
         QueueAggregateMetricsClient queueAggregateClient = new QueueAggregateMetricsClient(this.clientId, this.clientSecret);
+        //QueueAggregateMetricsClient queueAggregateClient = new QueueAggregateMetricsClient(this.clientId, CryptoUtil.decrypt(this.secretKey, this.clientSecret));
         queueAggregateClient.setInterval(interval);
         queueAggregateClient.setQueues(Config.get("report.servicenow.aggregate.queue.list"));
         SAEAggregateServiceNowReport report = new SAEAggregateServiceNowReport(StandardLauncher.REPORT_SERVICENOW_AGGREGATED,
@@ -183,8 +199,8 @@ public class StandardLauncher {
         String fileName = report.generate(outputType);
         ServiceNowSimpleClient snClient = new ServiceNowSimpleClient();
         snClient.uploadAttachment(Config.get("report.servicenow.aggregate.url"), 
-                                  Config.get("servicenow.clientId"), 
-                                  Config.get("servicenow.clientSecret"), 
+                                  Config.get("servicenow.clientId"),
+                                  CryptoUtil.decrypt(this.secretKey, Config.get("servicenow.clientSecret")),
                                   //"/Users/gmongelli/work/temp/sae/output/sae-servicenow-metrics-20180709.csv");
                                   //"/Users/gmongelli/work/temp/sae/output/SAE_TEST_ES.xlsx");
                                   this.outputPath + Config.get("program.separator") + fileName);
@@ -196,6 +212,8 @@ public class StandardLauncher {
     } catch (IOException e) {
       System.err.println(e.getMessage());
     } catch (ConfigException e) {
+      System.err.println(e.getMessage());
+    } catch(Exception e) {
       System.err.println(e.getMessage());
     } finally {
       System.out.println("Done!");
@@ -216,7 +234,7 @@ public class StandardLauncher {
    * "xytK_-47nGBldRND9LSCoLf6UNREjD6OPKS33JCxdv8"; }
    */
   
-  public void validateArg(String arg) throws ArgumentException {
+  public  void validateArg(String arg) throws ArgumentException {
     
     String value = arg.substring(2);
     if (arg.startsWith("-d")) {
@@ -246,6 +264,9 @@ public class StandardLauncher {
     } else if (arg.startsWith("-o")) {
       // output path
       this.outputPath = value;
+    } else if (arg.startsWith("-k")) {
+      // output path
+      this.secretKey = value;
     } else {
       throw new ArgumentException("Invalid arguments " + arg);
     }

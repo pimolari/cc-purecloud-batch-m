@@ -149,7 +149,6 @@ public class UserPresenceAggregatedMetricsClient extends AbstractClient {
     filter.setPredicates(Arrays.asList(predicate));
     body.setFilter(filter);
     
-    System.out.println("body: " + new Gson().toJson(body));
     
     try {
       PresenceQueryResponse result = apiInstance.postAnalyticsUsersAggregatesQuery(body);

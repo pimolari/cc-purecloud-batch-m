@@ -1,14 +1,16 @@
 package com.cc.purecloud.report;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import com.cc.purecloud.util.ArgumentException;
-import com.cc.purecloud.util.ConfigException;
 import com.cc.purecloud.util.Config;
+import com.cc.purecloud.util.ConfigException;
 import com.cc.purecloud.util.OutputException;
 
 public class GenericReport  {
@@ -112,7 +114,8 @@ public class GenericReport  {
     String fileName = this.calculateFileName();
     try {
       
-      BufferedWriter writer = new BufferedWriter(new FileWriter(this.outputPath + Config.get("program.separator") + fileName));
+      //BufferedWriter writer = new BufferedWriter(new FileWriter(this.outputPath + Config.get("program.separator") + fileName));
+      BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.outputPath + Config.get("program.separator") + fileName), StandardCharsets.UTF_8));
       writer.write(data);
       writer.close();
       
@@ -122,6 +125,7 @@ public class GenericReport  {
     
     return fileName;
   }
+  
     private String calculateFileName() throws ConfigException {
       StringBuffer fileName = new StringBuffer(Config.get(this.reportName + ".filename"));
       if (!fileName.toString().endsWith("-")) fileName.append("-"); 

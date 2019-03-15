@@ -2,7 +2,10 @@ package com.cc.purecloud.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.StringTokenizer;
+
 
 public class Utils {
   
@@ -52,12 +55,35 @@ public class Utils {
     return value;
   }
   
+  public static LocalDateTime adjustDate(LocalDateTime value, Long offset) {
+    
+    //System.out.print("DateTime: " + value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")) + " offset " + offset);
+    value = value.plusHours(offset);
+    //System.out.println(" >> " + value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+    return value;
+  }
+  
+  public static long convertToLong(String value) {
+    
+    long v = 0;
+    
+    try {
+      v = Long.parseLong(value);
+    } catch(NumberFormatException e) {
+      System.out.println("Could not understand value " + value + ". Applying 0");
+    }
+    
+    return v;
+  }
+  
   public static void main(String[] args) {
     
     BigDecimal x = new BigDecimal(999999999);
     System.out.println(x.intValue());
     System.out.println(x.divide(new BigDecimal(1000)));
     System.out.println(Utils.convert(x, "ms", "s"));
+    
+    Utils.adjustDate(LocalDateTime.now(), -5l);
     
   }
 }

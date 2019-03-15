@@ -57,10 +57,15 @@ public class SAEAggregateUserQueueReport extends GenericReport {
       } else if (aRow.getUserName() != null && !aRow.getUserName().equals(row.getUserName())) {
         
         buffer.append("\n");
-        buffer.append(aRow.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
-        buffer.append(aRow.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
-        buffer.append(aRow.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
-        buffer.append(aRow.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        //buffer.append(aRow.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        //buffer.append(aRow.getDateIni().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        //buffer.append(aRow.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        //buffer.append(aRow.getDateEnd().plusHours(2).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        
+        buffer.append(aRow.getDateIni().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        buffer.append(aRow.getDateIni().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+        buffer.append(aRow.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+        buffer.append(aRow.getDateEnd().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
         buffer.append(aRow.getUserName()).append(",");
         buffer.append(aRow.getTalk().getCount()).append(",");
         buffer.append(Utils.convert(aRow.getTalk().getTime(), "ms", "s")).append(",");

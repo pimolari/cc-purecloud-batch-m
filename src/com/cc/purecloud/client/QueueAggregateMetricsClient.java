@@ -206,6 +206,7 @@ public List<CustomUser> getUsers() {
     //System.out.println("2018-02-27T00:00:00/2018-02-27T23:59:59");
     //body.setInterval("2018-02-27T00:00:00/2018-02-27T23:59:59");
     body.setInterval(this.interval);
+    body.setTimeZone("Europe/Madrid");
     body.setGranularity("PT30M");
     body.groupBy(Arrays.asList(AggregationQuery.GroupByEnum.QUEUEID));
     body.setMetrics(Arrays.asList(AggregationQuery.MetricsEnum.TTALK, 
@@ -240,6 +241,7 @@ public List<CustomUser> getUsers() {
     queuePredicate.setDimension(DimensionEnum.QUEUEID);
     queuePredicate.setOperator(OperatorEnum.MATCHES);
     queuePredicate.setValue(queue.getId()); 
+    
     predicates.add(queuePredicate);
     
     AnalyticsQueryPredicate directionPredicate = new AnalyticsQueryPredicate();
@@ -273,8 +275,8 @@ public List<CustomUser> getUsers() {
     view2.setRange(range2);
     
     body.setViews(Arrays.asList(view1, view2));
-    
-    //System.out.println("body" + new Gson().toJson(body));
+
+
     
     try {
       //AggregateQueryResponse result = apiInstance.postConversationsAggregatesQuery(body); // v1 58.0

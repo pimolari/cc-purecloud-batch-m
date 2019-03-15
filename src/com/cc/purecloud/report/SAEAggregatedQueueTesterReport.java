@@ -50,16 +50,16 @@ public class SAEAggregatedQueueTesterReport extends GenericReport {
       buffer.append("\n");
       //buffer.append(row.getInterval()).append(",");
       
-      buffer.append(row.getDateIni().plusHours(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
-      buffer.append(row.getDateIni().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
-      buffer.append(row.getDateEnd().plusHours(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
-      buffer.append(row.getDateEnd().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
-      /*
+      //buffer.append(row.getDateIni().plusHours(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+      //buffer.append(row.getDateIni().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+      //buffer.append(row.getDateEnd().plusHours(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
+      //buffer.append(row.getDateEnd().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
+      
       buffer.append(row.getDateIni().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
       buffer.append(row.getDateIni().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
       buffer.append(row.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(",");
       buffer.append(row.getDateEnd().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).append(",");
-      */
+      
       buffer.append(row.getQueueName()).append(",");
       buffer.append(row.getOffered().getCount()).append(",");
       buffer.append(row.getAcd().getCount()).append(",");
